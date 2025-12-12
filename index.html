@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="100MB以上の音声ファイルを自動的に分割する無料のWebツール。ブラウザ上で完結し、サーバーにアップロードする必要がありません。">
+    <meta name="keywords" content="音声ファイル,分割,MP3,100MB,オーディオ,ツール">
+    <meta property="og:title" content="音声ファイル分割ツール">
+    <meta property="og:description" content="100MB以上の音声ファイルを自動的に分割する無料のWebツール">
+    <meta property="og:type" content="website">
+    <title>音声ファイル分割ツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- Header Section -->
+            <div class="header">
+                <h1>
+                    <span class="icon">🎵</span>
+                    音声ファイル分割ツール
+                </h1>
+                <p class="subtitle">100MB以上の音声ファイルを自動的に分割します</p>
+            </div>
+
+            <!-- File Upload Area -->
+            <div class="upload-area" id="uploadArea">
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-content">
+                        <span class="arrow-icon">⬆</span>
+                        <p>ファイルをドラッグ&ドロップ</p>
+                        <p class="or-text">または</p>
+                        <button class="select-btn" id="selectBtn">ファイルを選択</button>
+                    </div>
+                </div>
+                <input type="file" id="fileInput" accept="audio/*" style="display: none;">
+            </div>
+
+            <!-- Selected File Information -->
+            <div class="file-info" id="fileInfo" style="display: none;">
+                <h2>選択されたファイル</h2>
+                <div class="info-content">
+                    <p><strong>ファイル名:</strong> <span id="fileName"></span></p>
+                    <p><strong>ファイルサイズ:</strong> <span id="fileSize"></span></p>
+                    <p><strong>ファイルタイプ:</strong> <span id="fileType"></span></p>
+                </div>
+            </div>
+
+            <!-- Status Message -->
+            <div class="status-message" id="statusMessage" style="display: none;"></div>
+
+            <!-- No Split Needed Popup -->
+            <div class="popup-overlay" id="popupOverlay" style="display: none;">
+                <div class="popup-content popup-medium">
+                    <div class="check-icon">✓</div>
+                    <h2>分割不要です</h2>
+                    <p class="popup-message">このファイルは100MB以下です。分割する必要はありません。</p>
+                    
+                    <div class="popup-file-info">
+                        <h3>選択されたファイル</h3>
+                        <div class="info-content">
+                            <p><strong>ファイル名:</strong> <span id="popupFileName"></span></p>
+                            <p><strong>ファイルサイズ:</strong> <span id="popupFileSize"></span></p>
+                            <p><strong>ファイルタイプ:</strong> <span id="popupFileType"></span></p>
+                        </div>
+                    </div>
+                    
+                    <button class="popup-close-btn" id="popupCloseBtn">閉じる</button>
+                </div>
+            </div>
+
+            <!-- Split Complete Popup -->
+            <div class="popup-overlay" id="splitCompleteOverlay" style="display: none;">
+                <div class="popup-content popup-large">
+                    <button class="popup-close-x" id="splitCompleteCloseBtn">×</button>
+                    <h2 class="popup-title">分割完了</h2>
+                    
+                    <div class="popup-file-info">
+                        <h3>選択されたファイル</h3>
+                        <div class="info-content">
+                            <p><strong>ファイル名:</strong> <span id="splitPopupFileName"></span></p>
+                            <p><strong>ファイルサイズ:</strong> <span id="splitPopupFileSize"></span></p>
+                            <p><strong>ファイルタイプ:</strong> <span id="splitPopupFileType"></span></p>
+                        </div>
+                    </div>
+                    
+                    <p class="result-message" id="resultMessage"></p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>番号</th>
+                                    <th>ファイル名</th>
+                                    <th>サイズ</th>
+                                    <th>ダウンロード</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
