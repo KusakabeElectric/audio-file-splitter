@@ -171,17 +171,9 @@ function displaySplitResults() {
         const sizeCell = document.createElement('td');
         sizeCell.textContent = formatBytes(file.size);
         
-        const downloadCell = document.createElement('td');
-        const downloadBtn = document.createElement('button');
-        downloadBtn.className = 'download-btn';
-        downloadBtn.textContent = 'ダウンロード';
-        downloadBtn.onclick = () => downloadFile(file.blob, file.name);
-        downloadCell.appendChild(downloadBtn);
-        
         row.appendChild(numberCell);
         row.appendChild(nameCell);
         row.appendChild(sizeCell);
-        row.appendChild(downloadCell);
         
         tableBody.appendChild(row);
     });
@@ -201,6 +193,56 @@ function downloadFile(blob, filename) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+// Download all files at once (no confirmation)
+function downloadAllFiles() {
+    if (splitFiles.length === 0) return;
+    
+    const downloadAllBtn = document.getElementById('downloadAllBtn');
+    downloadAllBtn.disabled = true;
+    downloadAllBtn.textContent = 'ダウンロード中...';
+    
+    // Create all download links first (within user gesture context)
+    const downloadLinks = splitFiles.map((file) => {
+        const url = URL.createObjectURL(file.blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.name;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        return { element: a, url: url };
+    });
+    
+    // Trigger downloads sequentially with minimal delay
+    // This keeps them within the user gesture context
+    let index = 0;
+    function triggerNextDownload() {
+        if (index < downloadLinks.length) {
+            downloadLinks[index].element.click();
+            index++;
+            
+            if (index < downloadLinks.length) {
+                // Use requestAnimationFrame to maintain gesture context
+                requestAnimationFrame(() => {
+                    setTimeout(triggerNextDownload, 100);
+                });
+            } else {
+                // Clean up after all downloads are triggered
+                setTimeout(() => {
+                    downloadLinks.forEach(link => {
+                        document.body.removeChild(link.element);
+                        URL.revokeObjectURL(link.url);
+                    });
+                    downloadAllBtn.disabled = false;
+                    downloadAllBtn.textContent = 'ダウンロード';
+                }, 500);
+            }
+        }
+    }
+    
+    // Start the download sequence immediately
+    triggerNextDownload();
 }
 
 // Handle file selection
@@ -303,4 +345,7 @@ document.getElementById('splitCompleteOverlay').addEventListener('click', (e) =>
         closeSplitCompletePopup();
     }
 });
+
+// Download all button click handler
+document.getElementById('downloadAllBtn').addEventListener('click', downloadAllFiles);
 

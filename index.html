@@ -52,7 +52,6 @@
             <!-- No Split Needed Popup -->
             <div class="popup-overlay" id="popupOverlay" style="display: none;">
                 <div class="popup-content popup-medium">
-                    <div class="check-icon">✓</div>
                     <h2>分割不要です</h2>
                     <p class="popup-message">このファイルは100MB以下です。分割する必要はありません。</p>
                     
@@ -73,7 +72,8 @@
             <div class="popup-overlay" id="splitCompleteOverlay" style="display: none;">
                 <div class="popup-content popup-large">
                     <button class="popup-close-x" id="splitCompleteCloseBtn">×</button>
-                    <h2 class="popup-title">分割完了</h2>
+                    <div class="check-icon">✓</div>
+                    <h2>分割完了</h2>
                     
                     <div class="popup-file-info">
                         <h3>選択されたファイル</h3>
@@ -84,6 +84,9 @@
                         </div>
                     </div>
                     
+                    <div class="download-all-container">
+                        <button class="download-all-btn" id="downloadAllBtn">ダウンロード</button>
+                    </div>
                     <p class="result-message" id="resultMessage"></p>
                     <div class="table-container">
                         <table>
@@ -92,7 +95,6 @@
                                     <th>番号</th>
                                     <th>ファイル名</th>
                                     <th>サイズ</th>
-                                    <th>ダウンロード</th>
                                 </tr>
                             </thead>
                             <tbody id="resultsTableBody">
